@@ -66,7 +66,7 @@ setGlobalsForPeer1Excise
 setGlobalsForPeer1Manufacturer
 setGlobalsForPeer1Fbr
 
- peer lifecycle chaincode approveformyorg -o localhost:7050  --ordererTLSHostnameOverride orderer.excise.com --tls  --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name gocc --version 1.0  --init-required --package-id ${CC_PACKAGE_ID}   --sequence 1 --waitForEvent
+ peer lifecycle chaincode approveformyorg -o localhost:7050  --ordererTLSHostnameOverride orderer.excise.com --tls  --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name gocc --version 1.0  --init-required --package-id ${CC_PACKAGE_ID}   --sequence 2 --waitForEvent
 # peer lifecycle chaincode approveformyorg -n gocc -v 1.0 -C  automobilechannel --sequence 1  --init-required --package-id $CC_PACKAGE_ID -o localhost:7050 --waitForEvent 
 
 
@@ -74,7 +74,7 @@ Check Commit Readiness
 # peer   lifecycle   chaincode   checkcommitreadiness -n gocc -v 1.0 -C  automobilechannel --sequence 1 --init-required 
 peer lifecycle chaincode checkcommitreadiness \
         --channelID automobilechannel --name gocc --version 1.0 \
-        --sequence 1 --output json --init-required
+        --sequence 2 --output json --init-required
 
 
 #done here
@@ -85,7 +85,7 @@ peer lifecycle chaincode checkcommitreadiness \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         --channelID automobilechannel --name gocc \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER1_Excise_CA \
-        --version 1.0 --sequence 1 --init-required
+        --version 1.0 --sequence 2 --init-required
         # --peerAddresses localhost:10051 --tlsRootCertFiles $PEER1_Fbr_CA \
 
 5. Check committed
@@ -106,15 +106,22 @@ export CORE_PEER_ADDRESS="peer1.excise.com:7051"
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         -C automobilechannel -n gocc \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER1_Excise_CA \
+        --peerAddresses localhost:10051 --tlsRootCertFiles $PEER1_Fbr_CA \
         --isInit -c '{"Args":["init","Pkr","10000000","Pakistani Rupee!!!","MAdil"]}'
-        # --peerAddresses localhost:10051 --tlsRootCertFiles $PEER1_Fbr_CA \
 
 # peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.excise.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --isInit  -n gocc  -C automobilechannel -c '{"Args":["init","Pkr","10000000","Pakistani Rupee!!!","MAdil"]}'
 #done upto this
-peer chaincode query  -C automobilechannel -n gocc -c '{"Args":["balanceOf","3520299610969"]}'
-peer chaincode invoke -C automobilechannel -n gocc  -c '{"Args":["transfer", "3520299610969", "1234", "100","Dar"]}'
+# peer chaincode query  -C automobilechannel -n gocc -c '{"Args":["balanceOf","3520299610969"]}'
+# peer chaincode invoke -C automobilechannel -n gocc  -c '{"Args":["transfer", "3520299610969", "1234", "100","Dar"]}'
+ peer chaincode invoke -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.excise.com \
+        --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
+        -C automobilechannel -n gocc \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER1_Excise_CA \
+        --peerAddresses localhost:10051 --tlsRootCertFiles $PEER1_Fbr_CA \
+        -c '{"Args":["transfer", "3520299610969", "1234", "100","Dar"]}'
 
-
+peer chaincode query -C automobilechannel -n gocc -c '{"Args":["balanceOf","3520299610969"]}'
 
 use below using above amendments
 
@@ -128,11 +135,9 @@ Transfer 100 tokens from 'MAdil' to 'Dar'
   set-chain-env.sh         -i   '{"Args":["transfer", "3520299610969", "1234", "100","Dar"]}'
   chain.sh  invoke
 
-   set-chain-env.sh         -q   '{"Args":["balanceOf","1234"]}'
- chain.sh query
+   peer chaincode query -C automobilechannel -n gocc -c   '{"Args":["balanceOf","1234"]}'
+peer chaincode query -C automobilechannel -n gocc -c  '{"Args":["balanceOf","6666"]}'
 
- set-chain-env.sh         -q   '{"Args":["balanceOf","6666"]}'
- chain.sh query
  
  set-chain-env.sh         -i   '{"Args":["Manufacture", "3520299610969", "23B8", "A7655","Honda","2022","Car","Civic","7777","10000","12000","2/11/2022"]}'
   chain.sh  invoke
@@ -140,15 +145,15 @@ Transfer 100 tokens from 'MAdil' to 'Dar'
    set-chain-env.sh         -i   '{"Args":["Manufacture", "3520299610969", "23Be8", "A76e55","Honda","2022","Car","City","7777","10000","12000","2/11/2022"]}'
   chain.sh  invoke
 
-  set-chain-env.sh  -q '{"Args": ["GetVehiclesByCNIC", "7777"]}'
-chain.sh query
+peer chaincode query -C automobilechannel -n gocc -c '{"Args": ["GetVehiclesByCNIC", "7777"]}'
+
 Query
 =====
 Check the balance for 'Madil' & 'Dar'
- set-chain-env.sh         -q   '{"Args":["balanceOf","3520299610969"]}'
- chain.sh query
- set-chain-env.sh         -q   '{"Args":["balanceOf","6666"]}'
- chain.sh query
+peer chaincode query -C automobilechannel -n gocc -c   '{"Args":["balanceOf","3520299610969"]}'
+#  chain.sh query
+ peer chaincode query -C automobilechannel -n gocc -c    '{"Args":["balanceOf","6666"]}'
+#  chain.sh query
 
 Query 
 ====
