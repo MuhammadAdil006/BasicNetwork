@@ -1,15 +1,25 @@
-'use strict';
-const log4js = require('log4js');
-const logger = log4js.getLogger('BasicNetwork');
-const bodyParser = require('body-parser');
-const http = require('http')
-const util = require('util');
+'use strict';  
+// you cant use undeclared variables
+const log4js = require('log4js');//it is use to log messages on console different types o messages
+const logger = log4js.getLogger('BasicNetwork');//getting a logger instance and setting the name basic network to it
+const bodyParser = require('body-parser');//o parse HTTP request bodies. It extracts data from the request body and makes it available in a more convenient format for further processing in your Node.js application.
+//for example parsing in json the http the request body
+
+const http = require('http')//http package is used to create the server in nodejs
+
+const util = require('util');//formatting string,working with asynchronous functions
 const express = require('express')
 const app = express();
-const expressJWT = require('express-jwt');
+const expressJWT = require('express-jwt');//json web based toker authentication and authorization
+//it consists of three parts header payload and a signature
+//when the user log in it is used for subsequest requests
+
 const jwt = require('jsonwebtoken');
+//it is used to generate ,sign and verrify jwt token
 const bearerToken = require('express-bearer-token');
+
 const cors = require('cors');
+//cross origin resource sharing 
 const constants = require('./config/constants.json')
 
 const host = process.env.HOST || constants.host;

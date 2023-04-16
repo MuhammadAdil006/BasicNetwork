@@ -94,10 +94,10 @@ peer lifecycle chaincode querycommitted -n gocc  -C automobilechannel
 
 
 
-Setup the environment variable
-export CORE_CHAINCODE_ID_NAME=gocc:1.0
-export CORE_CHAINCODE_LOGGING_LEVEL=debug
-export CORE_PEER_ADDRESS="peer1.excise.com:7051"
+# Setup the environment variable
+# export CORE_CHAINCODE_ID_NAME=gocc:1.0
+# export CORE_CHAINCODE_LOGGING_LEVEL=debug
+# export CORE_PEER_ADDRESS="peer1.excise.com:7051"
 
 
 # Invoke and query

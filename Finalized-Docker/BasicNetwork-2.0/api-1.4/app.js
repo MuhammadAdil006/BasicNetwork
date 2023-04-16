@@ -14,11 +14,15 @@
  *  limitations under the License.
  */
 'use strict';
-var log4js = require('log4js');
+var log4js = require('log4js');   
+//simply logging utility
 var logger = log4js.getLogger('SampleWebApp');
+//named a logger
 var express = require('express');
 var bodyParser = require('body-parser');
+//use to convert body of http
 var http = require('http');
+//used to create a server instance
 var util = require('util');
 var app = express();
 var expressJWT = require('express-jwt');
@@ -26,6 +30,7 @@ var jwt = require('jsonwebtoken');
 var bearerToken = require('express-bearer-token');
 var cors = require('cors');
 const prometheus = require('prom-client')
+//alert tool
 
 require('./config.js');
 var hfc = require('fabric-client');
@@ -42,6 +47,7 @@ var port = process.env.PORT || hfc.getConfigSetting('port');
 
 
 app.options('*', cors());
+// CORS is a security feature implemented by web browsers that restricts cross-origin HTTP requests from being made by default. Cross-origin requests are requests that are made from one domain (or origin) to another domain. For example, if a frontend application hosted on https://example.com wants to make an HTTP request to an API hosted on https://api.example.com, the browser will block the request by default due to CORS.
 app.use(cors());
 //support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -49,7 +55,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
-// set secret variable
+// set secret variable dictionary secret
 app.set('secret', 'thisismysecret');
 app.use(expressJWT({
 	secret: 'thisismysecret'
@@ -123,7 +129,12 @@ app.post('/users', async function (req, res) {
 		username: username,
 		orgName: orgName
 	}, app.get('secret'));
+
+
 	let response = await helper.getRegisteredUser(username, orgName, true);
+
+
+	
 	logger.debug('-- returned from registering the username %s for organization %s', username, orgName);
 	if (response && typeof response !== 'string') {
 		logger.debug('Successfully registered the username %s for organization %s', username, orgName);
