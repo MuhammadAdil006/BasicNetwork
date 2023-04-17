@@ -15,18 +15,18 @@
                        <h1 class="text-center">Login</h1>
                    </div>
                    <div class=" col-md-12">
-                       <form action="/Home/SignIn" method="post" >
+                       <form action="/login" method="post" >
                            <div class="form-group mt-3">
                                
-                               <input type="email" class="form-control"  id="SignInemail" placeholder="Enter email">
+                               <input type="email" class="form-control" name="login-email" id="SignInemail" placeholder="Enter email">
                            </div>
                            
                            <div class="form-group mt-3">
 
-                               <input type="password" class="form-control"  id="password" placeholder="Enter password">
+                               <input type="password" class="form-control" name="login-password" id="password" placeholder="Enter password">
                            </div>
                            <div class="form-group mt-3">
-                            <select class="form-control"  id="login-organization">
+                            <select class="form-control" name="login-org" id="login-organization">
                                 <option  disabled value="Organization">Organization</option>
                                 <option selected  value="Excise">Excise</option>
                                 <option   value="Fbr">Fbr</option>
@@ -40,26 +40,26 @@
                                
                            </div>
                        </form>
-                       <!-- @if((Model.firstname=="" && @Model.Password=="")&&Model.id==-2)
-                       {
+                        <% if (registerSuccess=="success") { %>
                               <div class="alert alert-success a1"  style="position:absolute;top:71px;width:255px;height:50px" role="alert">
-                     You are registered succesfully -->
-                <!-- </div>
-                       }
-                       else{
-                           @if(Model.id==-5 &&(Model.firstname=="" && Model.Password==""))
-                               {
+                     You are registered succesfully
+                        </div>
+                       <% }else{ %>
+                        <% if (registerSuccess=="error") { %>
+                               
                                    <div class="alert alert-danger a1"  style="position:absolute;top:71px;width:255px;height:50px" role="alert">
-                     Some errors while registring.
-                </div>
+                                      Some errors while registring.
+                             </div>
+                        <% } %>
+                <% } %>
 
-                           }else if(@*Model.id==-4*@ false) 
-                           {
+                         <%  if(registerSuccess=="notfound" ){ %> 
+                           
                               <div class="alert alert-danger a1"  style="position:absolute;top:71px;width:255px;height:50px" role="alert">
-                     Email Already Exists!! Account not Created.Try Again with different Email.
+                     Wrong Credentials
                 </div>
-                           }
-                           else if(@*Model.id==-6 &&(Model.firstname=="" && *@Model.Password==""@*)*@)
+                           <%}%>
+                           <!-- else if(@*Model.id==-6 &&(Model.firstname=="" && *@Model.Password==""@*)*@)
                            {
                                 <div class="alert alert-danger "  style="position:absolute;top:71px;width:255px;height:50px" role="alert">
                      Wrong Credentials
@@ -69,8 +69,8 @@
                                 <div class="alert alert-danger "  style="position:absolute;top:71px;width:355px;height:50px" role="alert">
                     Your Account has been deactivated
                 </div>
-                           }
                            } -->
+                        
 
 
                        
@@ -108,7 +108,7 @@
        </div>
        <div class="modal-body">
          <!-- modal body is form -->
-                           <form action="/Home/SignUp" method="post" >
+                           <form action="/registerUser" method="post" >
                                <div class="row-12 text-danger" >
 
                                </div>
@@ -117,14 +117,14 @@
                                        <div class="form-group mt-3">
                                            
                                          
-                                           <input type="text" class="form-control"  id="Username" placeholder="Username">
+                                           <input type="text" class="form-control"  id="Username" name="username" placeholder="Username">
                                             <span class="text-danger" ></span>
                                        </div>
                                    </div>
                                    <div class="col-md-6">
                                        <div class="form-group mt-3">
                                             
-                                            <select class="form-control"  id="register-organization">
+                                            <select class="form-control" name="organization" id="register-organization">
                                                 <option  disabled value="Organization">Organization</option>
                                                 <option selected  value="Excise">Excise</option>
                                                 <option   value="Fbr">Fbr</option>
@@ -136,23 +136,23 @@
                                </div>
                                <div class="row">
                                        <div class="form-group mt-3">
-                                           <input type="number" class="form-control"  id="Cnic" placeholder="Cnic e.g 3520299610969">
+                                           <input type="number" class="form-control" name="cnic" id="Cnic" placeholder="Cnic e.g 3520299610969">
                                             <span class="text-danger" ></span>
                                         </div>
                                </div>
                                
                                <div class="form-group mt-3">
-                                   <input type="email" class="form-control"  id="email" placeholder="Enter email">
+                                   <input type="email" class="form-control" name="email" id="email" placeholder="Enter email">
                                    <span class="text-danger" ></span>
                                </div>
                                <div class="form-group mt-3">
    
-                                   <input type="password" class="form-control"  id="New_password" placeholder=" Password">
+                                   <input type="password" class="form-control" name="password" id="New_password" placeholder=" Password">
                                    <span class="text-danger" ></span>
                                </div>
                                <div class="form-group mt-3">
    
-                                   <input type="password" class="form-control"  id="New_password" placeholder="Confirm Password">
+                                   <input type="password" class="form-control" name="New_passwordConfirm" id="New_passwordConfirm" placeholder="Confirm Password">
                                    <span class="text-danger" ></span>
                                </div>
    
@@ -161,7 +161,7 @@
                                    <div class="col-4">
    
                                        <div class="form-group mt-3">
-                                           <select class="form-control" asp-for="day" id="day">
+                                           <select class="form-control" name="day" id="day">
                                                <option  value="">Day</option>
                                                <option selected value="1">1</option>
                                                <option value="2">2</option>
@@ -200,7 +200,7 @@
                                    </div>
                                    <div class="col-4">
                                        <div class="form-group mt-3">
-                                           <select class="form-control" asp-for="month" id="month">
+                                           <select class="form-control" name="month" id="month">
                                                <option  value="">Month</option>
                                                <option selected value="1">January</option>
                                                <option value="2">February</option>
@@ -219,7 +219,7 @@
                                    </div>
                                    <div class="col-4">
                                        <div class="form-group mt-3">
-                                           <select class="form-control" asp-for="year" id="year">
+                                           <select class="form-control" name="year" id="year">
                                                <option value="">Year</option>
                                                <option value="1940">1940</option>
                                                <option value="1941">1941</option>
@@ -316,29 +316,29 @@
                                            <div class="col-4 ">
                                                <div class="form-group px-2 py-2">
                                                    <label for="gender">Male</label>
-                                                   <input type="radio"  asp-for="gender" id="genderradioM" value="male">
+                                                   <input type="radio"  name="gender" id="genderradioM" value="male">
                                                </div>
                                            </div>
                                            <div class="col-4 ">
                                                <div class="form-group px-2 py-2">
                                                    <label for="gender">Female</label>
-                                                   <input type="radio"  asp-for="gender" id="genderradioF" value="female">
+                                                   <input type="radio"  name="gender" id="genderradioF" value="female">
                                                </div>
                                            </div>
                                            <div class="col-4">
                                                <div class="form-group  px-2 py-2">
                                                    <label for="gender">Custom</label>
-                                                   <input type="radio"  asp-for="gender"  value="other" >
+                                                   <input type="radio"  name="gender"  value="other" >
                                                </div>
                                            </div>
-                                           <span  class="text-danger" asp-validation-for="gender"></span>
+                                           <span  class="text-danger" ></span>
                                   
                                    </div>
                                   
                              
                                
                                <div class=" text-center form-group mt-3">
-                                   <button type="submit" class="btn btn-success btn-lg" >
+                                   <button type="submit" class="btn btn-success submit-btnn btn-lg" >
                                        Sign Up
                                    </button>
                 
