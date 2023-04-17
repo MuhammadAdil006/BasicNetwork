@@ -6,28 +6,34 @@ const FabricCAServices = require('fabric-ca-client');
 const fs = require('fs');
 
 const util = require('util');
-
+// ccp stands for common connection profile
 const getCCP = async (org) => {
     let ccpPath;
-    if (org == "Org1") {
-        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json');
+    if (org == "Excise") {
+        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-excise.json');
 
-    } else if (org == "Org2") {
-        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org2.json');
+    } else if (org == "Fbr") {
+        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-fbr.json');
+    }else if (org == "Manufacturer") {
+        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-manufacturer.json');
     } else
         return null
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
     const ccp = JSON.parse(ccpJSON);
+    console.log(ccp)
     return ccp
+    //connnecton profile conatins informaation about organizationa url and peer and its address also tls certificates
 }
 
 const getCaUrl = async (org, ccp) => {
     let caURL;
-    if (org == "Org1") {
-        caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+    if (org == "Excise") {
+        caURL = ccp.certificateAuthorities['ca.excise.com'].url;
 
-    } else if (org == "Org2") {
-        caURL = ccp.certificateAuthorities['ca.org2.example.com'].url;
+    } else if (org == "Fbr") {
+        caURL = ccp.certificateAuthorities['ca.fbr.com'].url;
+    }else if (org == "Manufacturer") {
+        caURL = ccp.certificateAuthorities['ca.manufacturer.com'].url;
     } else
         return null
     return caURL
@@ -36,11 +42,13 @@ const getCaUrl = async (org, ccp) => {
 
 const getWalletPath = async (org) => {
     let walletPath;
-    if (org == "Org1") {
-        walletPath = path.join(process.cwd(), 'org1-wallet');
+    if (org == "Excise") {
+        walletPath = path.join(process.cwd(), 'excise-wallet');
 
-    } else if (org == "Org2") {
-        walletPath = path.join(process.cwd(), 'org2-wallet');
+    } else if (org == "Fbr") {
+        walletPath = path.join(process.cwd(), 'fbr-wallet');
+    }else if (org == "Manufacturer") {
+        walletPath = path.join(process.cwd(), 'manufacturer-wallet');
     } else
         return null
     return walletPath
@@ -49,7 +57,15 @@ const getWalletPath = async (org) => {
 
 
 const getAffiliation = async (org) => {
-    return org == "Org1" ? 'org1.department1' : 'org2.department1'
+    if (org == "Excise") {
+        return "excise.department";
+
+    } else if (org == "Fbr") {
+        return "fbr.department";
+    }else if (org == "Manufacturer") {
+        return "manufacturer.department";
+    }
+    return "";
 }
 
 const getRegisteredUser = async (username, userOrg, isJson) => {
@@ -98,25 +114,35 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     // const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret, attr_reqs: [{ name: 'role', optional: false }] });
 
     let x509Identity;
-    if (userOrg == "Org1") {
+    if (userOrg == "Excise") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
                 privateKey: enrollment.key.toBytes(),
             },
-            mspId: 'Org1MSP',
+            mspId: 'ExciseMSP',
             type: 'X.509',
         };
-    } else if (userOrg == "Org2") {
+    } else if (userOrg == "Fbr") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
                 privateKey: enrollment.key.toBytes(),
             },
-            mspId: 'Org2MSP',
+            mspId: 'FbrMSP',
+            type: 'X.509',
+        };
+    }else if (userOrg == "Manufacturer") {
+        x509Identity = {
+            credentials: {
+                certificate: enrollment.certificate,
+                privateKey: enrollment.key.toBytes(),
+            },
+            mspId: 'ManufacturerMSP',
             type: 'X.509',
         };
     }
+
 
     await wallet.put(username, x509Identity);
     console.log(`Successfully registered and enrolled admin user ${username} and imported it into the wallet`);
@@ -161,7 +187,7 @@ const enrollAdmin = async (org, ccp) => {
 
     try {
 
-        const caInfo = await getCaInfo(org, ccp) //ccp.certificateAuthorities['ca.org1.example.com'];
+        const caInfo = await getCaInfo(org, ccp) //ccp.certificateAuthorities['ca.excise.com'];
         const caTLSCACerts = caInfo.tlsCACerts.pem;
         const ca = new FabricCAServices(caInfo.url, { trustedRoots: caTLSCACerts, verify: false }, caInfo.caName);
 
@@ -180,22 +206,31 @@ const enrollAdmin = async (org, ccp) => {
         // Enroll the admin user, and import the new identity into the wallet.
         const enrollment = await ca.enroll({ enrollmentID: 'admin', enrollmentSecret: 'adminpw' });
         let x509Identity;
-        if (org == "Org1") {
+        if (org == "Excise") {
             x509Identity = {
                 credentials: {
                     certificate: enrollment.certificate,
                     privateKey: enrollment.key.toBytes(),
                 },
-                mspId: 'Org1MSP',
+                mspId: 'ExciseMSP',
                 type: 'X.509',
             };
-        } else if (org == "Org2") {
+        } else if (org == "Fbr") {
             x509Identity = {
                 credentials: {
                     certificate: enrollment.certificate,
                     privateKey: enrollment.key.toBytes(),
                 },
-                mspId: 'Org2MSP',
+                mspId: 'FbrMSP',
+                type: 'X.509',
+            };
+        }else if (org == "Manufacturer") {
+            x509Identity = {
+                credentials: {
+                    certificate: enrollment.certificate,
+                    privateKey: enrollment.key.toBytes(),
+                },
+                mspId: 'ManufacturerMSP',
                 type: 'X.509',
             };
         }
