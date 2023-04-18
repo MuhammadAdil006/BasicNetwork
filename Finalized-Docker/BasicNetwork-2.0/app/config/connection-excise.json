@@ -23,7 +23,7 @@
         }
     },
     "peers": {
-        "peer1.excise.com": {
+	"peer1.excise.com": {
             "url": "grpcs://localhost:7051",
             "tlsCACerts": {
                 "pem": "-----BEGIN CERTIFICATE-----\nMIICQDCCAeagAwIBAgIRAKCARXVHv5cd9wAvwlOABYswCgYIKoZIzj0EAwIwajEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xEzARBgNVBAoTCmV4Y2lzZS5jb20xGTAXBgNVBAMTEHRsc2NhLmV4\nY2lzZS5jb20wHhcNMjMwNDE0MTA1OTAwWhcNMzMwNDExMTA1OTAwWjBqMQswCQYD\nVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5j\naXNjbzETMBEGA1UEChMKZXhjaXNlLmNvbTEZMBcGA1UEAxMQdGxzY2EuZXhjaXNl\nLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABDOTd0b+hIpkdoaeyVNSSMrO\n6vKBllbNjCMjepzx9SDcyRdX8IDFvhbtFBQIfRNYlQC9JHgblYpfqHz2xHQkjlWj\nbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUH\nAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQg3cj65AHnTBJeX+14Szefw+05\neI51YN4kH6N/O8crVtQwCgYIKoZIzj0EAwIDSAAwRQIgazdflulEUgBVS6bmlugT\negqiw7/itqZb2scFrByHf+wCIQDB0dgDbzB12MVHze+yFecxGXjacPMnAbTe6rIS\nXuFOOw==\n-----END CERTIFICATE-----\n"
@@ -32,7 +32,8 @@
                 "ssl-target-name-override": "peer1.excise.com",
                 "hostnameOverride": "peer1.excise.com"
             }
-        },
+        }
+    },
     "certificateAuthorities": {
         "ca.excise.com": {
             "url": "https://localhost:7056",
@@ -43,7 +44,15 @@
             "httpOptions": {
                 "verify": false
             }
+        },
+        "registrar": {
+          "enrollId": "admin",
+          "enrollSecret": "adminpw"
+        },
+        "caAdmin": {
+          "enrollId": "admin",
+          "enrollSecret": "adminpw"
         }
     }
 }
-}
+

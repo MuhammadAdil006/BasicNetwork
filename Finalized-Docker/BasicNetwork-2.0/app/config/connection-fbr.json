@@ -33,8 +33,6 @@
                 "hostnameOverride": "peer1.fbr.com"
             }
         }
-
-	
     },
     "certificateAuthorities": {
         "ca.fbr.com": {
