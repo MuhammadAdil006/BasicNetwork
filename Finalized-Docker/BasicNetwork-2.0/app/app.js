@@ -3,8 +3,10 @@ const express = require('express');
 const dbURL='mongodb+srv://adil:788925@automobileregistration.eygwh3a.mongodb.net/AutomobileRegistration?retryWrites=true&w=majority';
 //mongoose just like entity framework
 const mongoose = require('mongoose');
+const constants = require('./config/constants.json')
 
-const User = require('./models/user');
+const helper = require('./sdk/helper');
+const userRoutes=  require('./routes/userRoutes');
 mongoose.connect(dbURL).then((result) =>{
     console.log("db connected");
     app.listen(4000);
@@ -13,7 +15,7 @@ const app = express();
 const morgan = require('morgan');
 //register view engine
 app.set('view engine', 'ejs');
-
+const bodyParser = require('body-parser');
 
 app.use(morgan('dev'));
 //logger middleware
@@ -29,11 +31,14 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 //get the data from form and use it in heandler
 app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.get('/',(req,res)=>{
     
    res.render('index',{title:"Automobile Registration System",registerSuccess:"notdefined"});
 });
 
+//login and register
+app.use(userRoutes);    
 //interacting with database
 // app.get('/registerUser',(req,res)=>{
 //     const user= new User({
@@ -52,38 +57,7 @@ app.get('/',(req,res)=>{
 //         console.log(error);
 //     });
 // });
-app.post('/login', (req, res)=>{
-    console.log(req.body);
-    var a=req.body['login-email'];
-    var b=req.body["login-password"];
-    var c=req.body["login-org"];
-    User.findOne({email: a,password:b,organization:c}).then((result)=>{
-        if (result==null){
-            console.log("User not found");
-            res.render('index',{title:"Automobile Registration System",registerSuccess:"notfound"});
-        }else{
-            console.log(result);
-        }
-    }).catch((error)=>{
-        console.log(error);
-    });
-    
-});
-app.post('/registerUser', (req, res)=>{
-    const date=req.body.day+"-"+req.body.month+"-"+req.body.year;
-    req.body.dateOfBirth=date;
-    req.body.userType="user";
-    console.log(req.body);
-    const user= new User(req.body
-        );
-        user.save().then((result)=>{
-            
-            res.render("index",{title:"Automobile registration",registerSuccess:"success"});
-        }).catch((error)=>{console.log(error);
-           
-            res.render("index",{title:"Automobile registration",registerSuccess:"error"});
-        });
-});
+
 
 //404 page
 app.use((req,res)=> {   
