@@ -6,8 +6,8 @@ router.post('/login', (req, res)=>{
     console.log(req.body);
     var a=req.body['login-email'];
     var b=req.body["login-password"];
-    var c=req.body["login-org"];
-    User.findOne({email: a,password:b,organization:c}).then((result)=>{
+    // var c=req.body["login-org"];
+    User.findOne({email: a,password:b}).then((result)=>{
         if (result==null){
             console.log("User not found");
             res.render('index',{title:"Automobile Registration System",registerSuccess:"notfound"});
@@ -27,7 +27,7 @@ router.post('/registerUser', (req, res)=>{
     const user= new User(req.body
         );
         user.save().then((result)=>{
-            helper.getRegisteredUser(req.body.username, req.body.organization, true).then((result)=>{
+            helper.getRegisteredUser(req.body.username, "Fbr", true).then((result)=>{
                 console.log(result);
                 res.render("index",{title:"Automobile registration",registerSuccess:"success"});
             }) 
