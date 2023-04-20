@@ -23,6 +23,7 @@ router.post('/registerUser', (req, res)=>{
     const date=req.body.day+"-"+req.body.month+"-"+req.body.year;
     req.body.dateOfBirth=date;
     req.body.userType="user";
+    req.body.organization="Fbr";
     console.log(req.body);
     const user= new User(req.body
         );

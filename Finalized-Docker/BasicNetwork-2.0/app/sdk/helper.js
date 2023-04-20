@@ -8,7 +8,7 @@ const fs = require('fs');
 const util = require('util');
 // ccp stands for common connection profile
 const getCCP =  (org) => {
-    // let ccpPath;
+    let ccpPath;
     // if (org == "Excise") {
     //     ccpPath = path.resolve(__dirname, '..', 'config', 'connection-excise.json');
 
@@ -68,7 +68,7 @@ const getAffiliation =  (org) => {
     // }else if (org == "Manufacturer") {
     //     return "manufacturer.department";
     // }
-    return "fbr.department";
+    return "fbr";
 }
 
 const getRegisteredUser = async (username, userOrg, isJson) => {
@@ -106,7 +106,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        secret = await ca.register({ affiliation: "", enrollmentID: username, role: 'user' }, adminUser);
         // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     } catch (error) {
@@ -300,7 +300,7 @@ const registerAndGerSecret = async (username, userOrg) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'user' }, adminUser);
         // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     } catch (error) {
