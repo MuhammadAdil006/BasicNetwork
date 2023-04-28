@@ -18,6 +18,11 @@ const getCCP =  (org) => {
     //     ccpPath = path.resolve(__dirname, '..', 'config', 'connection-manufacturer.json');
     // } else
     //     return null
+    if (org == "Fbr") {
+            ccpPath = path.resolve(__dirname, '..', 'config', 'connection-fbr.json');
+        }else if (org == "Manufacturer") {
+            ccpPath = path.resolve(__dirname, '..', 'config', 'connection-manufacturer.json');
+        }
     ccpPath = path.resolve(__dirname, '..', 'config', 'connection-fbr.json');
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
     const ccp = JSON.parse(ccpJSON);

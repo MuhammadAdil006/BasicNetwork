@@ -1,101 +1,62 @@
-const FabricCAServices = require('fabric-ca-client');
-const { Wallets } = require('fabric-network');
-const fs = require('fs');
+
+// Load required modules
+const { Wallets, Gateway } = require('fabric-network');
 const path = require('path');
+const fs=require('fs');
+// Set connection options
+const ccpPath = path.resolve(__dirname, '..','config', 'connection-fbr.json');
 
-// Connection profile and wallet path
-const connectionProfilePath = '../config/connection-manufacturer.json';
-const walletPath  = path.join(process.cwd(), 'manufacturer-wallet');
+const identityLabel = 'Manufaactureradmin';
+const channelName = 'automobilechannel';
+const chaincodeName = 'gocc';
+const functionName = 'balanceOf';
+const args = ['3520299610969'];
 
-// Organization and admin credentials
-const orgName = 'manufacturer';
-const adminId = 'admin';
-const adminPassword = 'adminpw';
-
-// User to register and enroll
-const username = 'user2';
-const userPassword = 'userpw';
-
-// Load connection profile
-const connectionProfile = JSON.parse(fs.readFileSync(connectionProfilePath, 'utf8'));
-
-async function enrollAdmin() {
+async function queryFromChaincode() {
+  const walletPath = path.resolve(__dirname, '..', 'wallet');
+  const wallet = await Wallets.newFileSystemWallet(walletPath);
   try {
-    // Create a new CA client
-    console.log(connectionProfile);
-    const caInfo = connectionProfile.certificateAuthorities["ca.manufacturer.com"].url;
-    const ca = new FabricCAServices(caInfo);
+    // Connect to the gateway using the wallet
+    const gateway = new Gateway();
+    const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
+    const ccp = JSON.parse(ccpJSON);
+    await gateway.connect(ccp, {
+      wallet,
+      identity: await wallet.get('Fbradmin'),
+      discovery: { enabled: true, asLocalhost: true }
+    });
 
-    // Enroll the admin identity
-    const enrollment = await ca.enroll({ enrollmentID: adminId, enrollmentSecret: adminPassword });
+    // Get the network and chaincode
+    const network = await gateway.getNetwork(channelName);
+    const contract = network.getContract(chaincodeName);
 
-    // Create a new wallet
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    // Submit the transaction
+    const result = await contract.evaluateTransaction(functionName, ...args);
+    let ress=String(result);
+    let arr=ress.split(",");
+    let arr1=arr[1].split(":");
+    // console.log(arr1);
+    let x="\""+arr1[1];
+    arr1[1]=x;
+    // console.log(arr1);
+    // arr1 contains balance and amount as array
+    let arr2=arr[2];
+    let y= arr2.split(":");
+    // console.log(y);
+    let name ="\""+y[1].slice(0,-1)+"\"";
+    y[1]=name;
+    let c=arr1.concat(JsonObject);
+    var JsonObject ="{ \"balance\":"+arr1[1]+",\"name\":"+name+"}";
+    console.log(JsonObject);
+    // console.log(`Query result: ${String(result)}`);
 
-    // Create a new identity for the admin
-    const identity = {
-      credentials: {
-        certificate: enrollment.certificate,
-        privateKey: enrollment.key.toBytes(),
-      },
-      mspId: connectionProfile.organizations["Manufacturer"].mspid,
-      type: 'X.509',
-    };
-    await wallet.put(adminId, identity);
-    console.log('Successfully enrolled admin and stored in wallet!');
+    // Disconnect from the gateway
+    await gateway.disconnect();
+
+    return result.toString();
   } catch (error) {
-    console.error(`Failed to enroll admin: ${error}`);
-    process.exit(1);
+    console.error(`Failed to query chaincode: ${error}`);
+    return null;
   }
 }
-
-async function registerAndEnrollUser() {
-  try {
-    // Load wallet
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-
-    // Check if user is already registered
-    const userIdentity = await wallet.get(username);
-    if (userIdentity) {
-      console.error(`User ${username} already registered in wallet!`);
-      process.exit(1);
-    }
-
-    // Create a new CA client
-    const caInfo = connectionProfile.certificateAuthorities[orgName].url;
-    const ca = new FabricCAServices(caInfo);
-
-    // Enroll the admin to get a signing identity
-    const adminIdentity = await wallet.get(adminId);
-    const enrollment = await ca.enroll({ enrollmentID: adminId, enrollmentSecret: adminPassword });
-    const identity = {
-      credentials: {
-        certificate: enrollment.certificate,
-        privateKey: enrollment.key.toBytes(),
-      },
-      mspId: connectionProfile.organizations[orgName].mspid,
-      type: 'X.509',
-    };
-
-    // Register and enroll the user
-    const secret = await ca.register(
-      { enrollmentID: username, affiliation: orgName.toLowerCase() },
-      adminIdentity
-    );
-    await ca.enroll({ enrollmentID: username, enrollmentSecret: secret }, identity);
-
-    // Create a new identity for the user
-    await wallet.put(username, identity);
-    console.log(`Successfully registered and enrolled user ${username} and stored in wallet!`);
-  } catch (error) {
-    console.error(`Failed to register and enroll user: ${error}`);
-    process.exit(1);
-  }
-}
-
-enrollAdmin()
-  .then(() => {
-    // registerAndEnrollUser();
-    console.log("done");
-})
-  .catch((error) => console.error(error));
+queryFromChaincode();

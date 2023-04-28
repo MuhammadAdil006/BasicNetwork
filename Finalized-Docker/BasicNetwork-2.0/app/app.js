@@ -4,7 +4,8 @@ const dbURL='mongodb+srv://adil:788925@automobileregistration.eygwh3a.mongodb.ne
 //mongoose just like entity framework
 const mongoose = require('mongoose');
 const constants = require('./config/constants.json')
-
+//session
+const session=require('express-session');
 const helper = require('./sdk/helper');
 const userRoutes=  require('./routes/userRoutes');
 mongoose.connect(dbURL).then((result) =>{
@@ -16,6 +17,15 @@ const morgan = require('morgan');
 //register view engine
 app.set('view engine', 'ejs');
 const bodyParser = require('body-parser');
+
+app.use(session({
+    	//Usuage
+        secret: 'keyboard cat',
+        saveUninitialized: true,
+        cookie: { secure: true },
+        resave:false,
+        maxAge:300000
+}));
 
 app.use(morgan('dev'));
 //logger middleware
