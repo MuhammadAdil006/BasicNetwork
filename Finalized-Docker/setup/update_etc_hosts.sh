@@ -47,3 +47,7 @@ addhost $HOSTNAME
 HOSTNAME=couchdb2
 removehost $HOSTNAME            &> /dev/null
 addhost $HOSTNAME
+
+HOSTNAME=tlsca.fbr.com
+removehost $HOSTNAME            &> /dev/null
+addhost $HOSTNAME

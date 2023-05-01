@@ -20,11 +20,9 @@ const bodyParser = require('body-parser');
 
 app.use(session({
     	//Usuage
-        secret: 'keyboard cat',
+        secret: 'keyboardcat',
         saveUninitialized: true,
-        cookie: { secure: true },
         resave:false,
-        maxAge:300000
 }));
 
 app.use(morgan('dev'));
@@ -48,7 +46,7 @@ app.get('/',(req,res)=>{
 });
 
 //login and register
-app.use(userRoutes);    
+app.use(userRoutes);  
 //interacting with database
 // app.get('/registerUser',(req,res)=>{
 //     const user= new User({

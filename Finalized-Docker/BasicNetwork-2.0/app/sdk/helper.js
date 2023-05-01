@@ -26,7 +26,7 @@ const getCCP =  (org) => {
     ccpPath = path.resolve(__dirname, '..', 'config', 'connection-fbr.json');
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
     const ccp = JSON.parse(ccpJSON);
-    console.log(ccp)
+    // console.log(ccp)
     return ccp
     //connnecton profile conatins informaation about organizationa url and peer and its address also tls certificates
 }
@@ -97,17 +97,17 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     }
 
     // Check to see if we've already enrolled the admin user.
-    let adminIdentity = await wallet.get('admin');
-    if (!adminIdentity) {
-        console.log('An identity for the admin user "admin" does not exist in the wallet');
-         enrollAdmin(userOrg, ccp);
-        adminIdentity = await wallet.get('admin');
-        console.log("Admin Enrolled Successfully")
-    }
+    let adminIdentity = await wallet.get('Fbradmin');
+    // if (!adminIdentity) {
+    //     console.log('An identity for the admin user "admin" does not exist in the wallet');
+    //      enrollAdmin(userOrg, ccp);
+    //     adminIdentity = await wallet.get('admin');
+    //     console.log("Admin Enrolled Successfully")
+    // }
 
     // build a user object for authenticating with the CA
     const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
-    const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+    const adminUser = await provider.getUserContext(adminIdentity, 'Fbradmin');
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.

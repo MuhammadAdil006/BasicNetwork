@@ -63,16 +63,16 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
             let arr=ress.split(",");
             let arr1=arr[1].split(":");
             // console.log(arr1);
-            let x="\""+arr1[1];
-            arr1[1]=x;
-            // console.log(arr1);
+            let x=arr1[1];
+            arr1[1]=x.slice(0,-1);
+            console.log(arr1);
             // arr1 contains balance and amount as array
             let arr2=arr[2];
             let y= arr2.split(":");
             // console.log(y);
             let name ="\""+y[1].slice(0,-1)+"\"";
             y[1]=name;
-            var JsonObject ={ "balance":arr1[1],"name":name};
+            var JsonObject ={ "balance":parseInt(arr1[1]),"name":name};
             // console.log(result.response)
             console.log(`Transaction has been evaluated, result is: ${JsonObject}`);
             return JsonObject;

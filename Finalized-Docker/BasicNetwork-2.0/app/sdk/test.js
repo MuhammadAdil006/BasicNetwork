@@ -1,62 +1,42 @@
-
-// Load required modules
-const { Wallets, Gateway } = require('fabric-network');
+const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
-const fs=require('fs');
+const helper=require('./helper');
 // Set connection options
-const ccpPath = path.resolve(__dirname, '..','config', 'connection-fbr.json');
+const ccpPath = helper.getCCP("fbr");
 
-const identityLabel = 'Manufaactureradmin';
-const channelName = 'automobilechannel';
-const chaincodeName = 'gocc';
-const functionName = 'balanceOf';
-const args = ['3520299610969'];
 
-async function queryFromChaincode() {
-  const walletPath = path.resolve(__dirname, '..', 'wallet');
+async function invoke() {
+  const walletPath = await helper.getWalletPath("fbr") //.join(process.cwd(), 'wallet');
   const wallet = await Wallets.newFileSystemWallet(walletPath);
+  const gatewayOptions = {
+  wallet,
+  identity: 'Fbradmin',
+  discovery: { enabled: true, asLocalhost: true },
+  eventHandlerOptions:{
+    strategy:null
+  }
+};
   try {
-    // Connect to the gateway using the wallet
+    // Connect to gateway using connection profile and wallet
     const gateway = new Gateway();
-    const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
-    const ccp = JSON.parse(ccpJSON);
-    await gateway.connect(ccp, {
-      wallet,
-      identity: await wallet.get('Fbradmin'),
-      discovery: { enabled: true, asLocalhost: true }
-    });
+    await gateway.connect(ccpPath, gatewayOptions);
 
-    // Get the network and chaincode
-    const network = await gateway.getNetwork(channelName);
-    const contract = network.getContract(chaincodeName);
-
-    // Submit the transaction
-    const result = await contract.evaluateTransaction(functionName, ...args);
-    let ress=String(result);
-    let arr=ress.split(",");
-    let arr1=arr[1].split(":");
-    // console.log(arr1);
-    let x="\""+arr1[1];
-    arr1[1]=x;
-    // console.log(arr1);
-    // arr1 contains balance and amount as array
-    let arr2=arr[2];
-    let y= arr2.split(":");
-    // console.log(y);
-    let name ="\""+y[1].slice(0,-1)+"\"";
-    y[1]=name;
-    let c=arr1.concat(JsonObject);
-    var JsonObject ="{ \"balance\":"+arr1[1]+",\"name\":"+name+"}";
-    console.log(JsonObject);
-    // console.log(`Query result: ${String(result)}`);
-
-    // Disconnect from the gateway
-    await gateway.disconnect();
-
-    return result.toString();
+    // Get network and contract objects
+    const network = await gateway.getNetwork('automobilechannel');
+    const contract = network.getContract('gocc');
+    console.log(contract);
+    // Submit transaction to chaincode
+    // const result =await contract.submitTransaction("transfer", "3520299610969", "1234", "100","Dar");
+    let txn=contract.createTransaction("transfer");
+    console.log(txn.getName());
+    console.log(txn.getTransactionId());
+    let result=await txn.submit("3520299610969", "1234", "100","Dar");
+    console.log('Transaction has been submitted',String(result));
+    gateway.disconnect();
   } catch (error) {
-    console.error(`Failed to query chaincode: ${error}`);
-    return null;
+    console.error(`Failed to submit transaction: ${error}`);
+    process.exit(1);
   }
 }
-queryFromChaincode();
+
+invoke();
