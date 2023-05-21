@@ -87,7 +87,7 @@ channels:
 #
 orderers:
   orderer.excise.com:
-    url: grpc://localhost:7050
+    url: grpcs://localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
@@ -96,7 +96,7 @@ orderers:
 
     # In dev environment the Orderer is NOT enabled for TLS
     tlsCACerts:
-      path: ./../../../artifacts/channel/crypto-config/ordererOrganizations/excise.com/orderers/orderer.excise.com/msp/tlscacerts/tlsca.excise.com-cert.pem
+      path: ./../artifacts/channel/crypto-config/ordererOrganizations/excise.com/orderers/orderer.excise.com/msp/tlscacerts/tlsca.excise.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
@@ -105,51 +105,71 @@ orderers:
 peers:
   peer1.excise.com:
 
-    url: grpc://localhost:7051
+    url: grpcs://localhost:7051
 
     grpcOptions:
       ssl-target-name-override: peer1.excise.com
 
     tlsCACerts:
-      path: ./../../../artifacts/channel/crypto-config/peerOrganizations/excise.com/tlsca/tlsca.excise.com-cert.pem
+      path: ./../artifacts/channel/crypto-config/peerOrganizations/excise.com/tlsca/tlsca.excise.com-cert.pem
 
   peer1.fbr.com:
 
-    url: grpc://localhost:10051
+    url: grpcs://localhost:10051
 
     grpcOptions:
       ssl-target-name-override: peer1.fbr.com
 
     tlsCACerts:
-      path:  ./../../../artifacts/channel/crypto-config/peerOrganizations/fbr.com/tlsca/tlsca.fbr.com-cert.pem
+      path:  ./../artifacts/channel/crypto-config/peerOrganizations/fbr.com/tlsca/tlsca.fbr.com-cert.pem
 
   peer1.manufacturer.com:
-    url: grpc://localhost:20051
+    url: grpcs://localhost:20051
 
     grpcOptions:
         ssl-target-name-override: peer1.manufacturer.com
 
     tlsCACerts:
-      path:  ./../../../artifacts/channel/crypto-config/peerOrganizations/manufacturer.com/tlsca/tlsca.manufacturer.com-cert.pem
+      path:  ./../artifacts/channel/crypto-config/peerOrganizations/manufacturer.com/tlsca/tlsca.manufacturer.com-cert.pem
 
 certificateAuthorities:
   ca.excise.com:
-    url: https://ca.excise.com:7056
+    url: https://localhost:7056
     httpOptions:
       verify : false
     tlsCACerts:
-      path: ./../../../artifacts/channel/crypto-config/peerOrganizations/excise.com/tlsca/tlsca.excise.com-cert.pem
+      path: ./../artifacts/channel/crypto-config/peerOrganizations/excise.com/tlsca/tlsca.excise.com-cert.pem
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
     caName: ca.excise.com
+    # caAdmin:
+    #   - enrollId: admin
+    #     enrollSecret: adminpw
+    grpcOptions:
+      ssl-target-name-override: ca.excise.com
+
   ca.fbr.com:
-    url: https://ca.excise.com:7054
+    url: https://localhost:7054
     httpOptions:
       verify : false
     tlsCACerts:
-      path: ./../../../artifacts/channel/crypto-config/peerOrganizations/fbr.com/tlsca/tlsca.fbr.com-cert.pem
+      path: ./../artifacts/channel/crypto-config/peerOrganizations/fbr.com/tlsca/tlsca.fbr.com-cert.pem
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
     caName: ca.fbr.com
+    grpcOptions:
+      ssl-target-name-override: ca.fbr.com
+  ca.manufacturer.com:
+    url: https://localhost:7053
+    httpOptions:
+      verify : false
+    tlsCACerts:
+      path: ./../artifacts/channel/crypto-config/peerOrganizations/manufacturer.com/tlsca/tlsca.manufacturer.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.manufacturer.com
+    grpcOptions:
+      ssl-target-name-override: ca.manufacturer.com

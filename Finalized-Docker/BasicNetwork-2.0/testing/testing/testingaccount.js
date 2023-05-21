@@ -26,7 +26,7 @@ async function enrollUser() {
     const adminExists = await wallet.get('Fbradmin');
     //working perfectly fine
     // if (!adminExists) {
-    //   // Enroll the admin identity with the CA
+      // Enroll the admin identity with the CA
     //   const enrollment = await caClient.enroll({ enrollmentID: 'admin', enrollmentSecret: 'adminpw' });
 
     //   // Create a new identity object for the admin
@@ -41,7 +41,7 @@ async function enrollUser() {
 
     //   // Add the admin identity to the wallet
     //   await wallet.put('admin', identity);
-    // }
+    // // }
 
     // Check if the user identity already exists in the wallet
     const userExists = await wallet.get('user6');

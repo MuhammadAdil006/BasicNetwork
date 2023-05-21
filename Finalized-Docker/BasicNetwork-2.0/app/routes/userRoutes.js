@@ -27,10 +27,21 @@ router.post('/transferTokens',async function(req,res){
     console.log(result.cnic);
     let transferResult=await TransferTokens(result.cnic,rec_cnic,amount,receiver_name,usern,Org);
     console.log(transferResult);
-    // let message= await balanceOf(result.cnic,usern,Org);
+    await sleep(2000);
+    let message= await balanceOf(result.cnic,usern,Org);
     // console.log("message",message);
-    res.render('homepage',{username:result.username,token:message["balance"]});
+    let transferMessage="";
+    if (transferResult.nessage=="success"){
+        transferMessage="success";
+    }
+    console.log(message);
+    res.render('homepage',{username:result.username,token:message["balance"],transferMessage});
 });
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
 router.post('/login',async function(req, res){
     console.log(req.body);
     var a=req.body['login-email'];
@@ -58,7 +69,13 @@ router.post('/login',async function(req, res){
            
             let message= await balanceOf(result.cnic,usern,Org);
             console.log("message",message);
-            res.render('homepage',{username:result.username,token:message["balance"]});
+            let transferMessage="no";
+
+            //get the vehicles owned
+            // "GetVehiclesByCNIC", "7777"
+            let cards=await query.query("automobilechannel", "gocc", [result.cnic],"GetVehiclesByCNIC",usern,Org);
+
+            res.render('homepage',{username:result.username,token:message["balance"],transferMessage});
         }
     }).catch((error)=>{
         console.log(error);

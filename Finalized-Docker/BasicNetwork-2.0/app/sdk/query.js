@@ -76,6 +76,12 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
             // console.log(result.response)
             console.log(`Transaction has been evaluated, result is: ${JsonObject}`);
             return JsonObject;
+        }else if (fcn=="GetVehiclesByCNIC")
+        {
+
+            result = await contract.evaluateTransaction(fcn, args[0]);
+            let ress=String(result);
+            console.log(fcn,args[0],ress);
         }
         
         // result = JSON.parse(result.toString());
