@@ -73,9 +73,10 @@ router.post('/login',async function(req, res){
 
             //get the vehicles owned
             // "GetVehiclesByCNIC", "7777"
-            let cards=await query.query("automobilechannel", "gocc", [result.cnic],"GetVehiclesByCNIC",usern,Org);
+            let cars=await query.query("automobilechannel", "gocc", [result.cnic],"GetVehiclesByCNIC",usern,Org);
+            
 
-            res.render('homepage',{username:result.username,token:message["balance"],transferMessage});
+            res.render('homepage',{username:result.username,token:message["balance"],transferMessage,cars});
         }
     }).catch((error)=>{
         console.log(error);

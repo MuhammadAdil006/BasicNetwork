@@ -81,7 +81,13 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
 
             result = await contract.evaluateTransaction(fcn, args[0]);
             let ress=String(result);
-            console.log(fcn,args[0],ress);
+            let allCars=[];
+            if (result){
+                var JSONObject = JSON.parse(result);
+                return JSONObject;
+
+            }
+            return NONE;
         }
         
         // result = JSON.parse(result.toString());

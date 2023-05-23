@@ -94,17 +94,20 @@
       <section class="container">
         <div class="container">
             <div class="row">
+              <% cars.forEach(function(car) { %>
               <div class="col-md-4 mb-4">
                 <div class="card h-100">
                   <img src="https://via.placeholder.com/300x200.png?text=Car+Image" class="card-img-top" alt="Car Image">
                   <div class="card-body">
-                    <h5 class="card-title">2018 Toyota Camry</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec nisl id arcu bibendum aliquet.</p>
+                    <h5 class="card-title"><%=car.year%> <%=car.model%> <%=car.companyName%></h5>
+                    <p class="card-text"></p>
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><strong>Color:</strong> Gray</li>
-                      <li class="list-group-item"><strong>Model:</strong> LE</li>
-                      <li class="list-group-item"><strong>Mileage:</strong> 35,000</li>
-                      <li class="list-group-item"><strong>VIN:</strong> ABC12345DEF67890</li>
+                      <li class="list-group-item"><strong>Chassis No:</strong> <%=car.chassisNo%></li>
+                      <li class="list-group-item"><strong>Model:</strong> <%=car.model%></li>
+                      <li class="list-group-item"><strong>Type:</strong> <%=car.type%></li>
+                      <li class="list-group-item"><strong>Engine No:</strong> <%=car.engineNo%></li>
+                      <li class="list-group-item"><strong>Price</strong> <%=car.soldPrice%></li>
+                      <li class="list-group-item"><strong>Last Transfer Date</strong> <%=car.transferDate%></li>
                     </ul>
                   </div>
                   <div class="card-footer">
@@ -125,6 +128,14 @@
                           
                           <div class="modal-body">
                             <div class="col-md-6 mx-auto">
+                              <div class="form-group">
+                                <label for="engine">Engine no</label>
+                                <input type="text" class="form-control" disabled id="engine" name="engine" value="<%=car.engineNo%>" >
+                              </div>
+                              <div class="form-group">
+                                <label for="chassis">Chassis No</label>
+                                <input type="text" class="form-control" disabled id="chassis" name="chassis"  value="<%=car.chassisNo%>">
+                              </div>
                               <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
@@ -151,113 +162,8 @@
                 </div>
               </div>
   </form>
-              <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                  <img src="https://via.placeholder.com/300x200.png?text=Car+Image" class="card-img-top" alt="Car Image">
-                  <div class="card-body">
-                    <h5 class="card-title">2019 Honda Accord</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec nisl id arcu bibendum aliquet.</p>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><strong>Color:</strong> Red</li>
-                      <li class="list-group-item"><strong>Model:</strong> EX-L</li>
-                      <li class="list-group-item"><strong>Mileage:</strong> 25,000</li>
-                      <li class="list-group-item"><strong>VIN:</strong> DEF67890ABC12345</li>
-                    </ul>
-                  </div>
-                  <div class="card-footer">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vehicle2">Transfer Vehicle</button>
-
-<!-- Modal -->
-                    <div class="modal fade" id="vehicle2" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="my-modal-label">Transfer Vehicle</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          
-                          <div class="modal-body">
-                            <div class="col-md-6 mx-auto">
-                          <form>
-                            <div class="form-group">
-                              <label for="name">Name</label>
-                              <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
-                            </div>
-                            <div class="form-group">
-                              <label for="email">Email address</label>
-                              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address">
-                            </div>
-                            <div class="form-group">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password">
-                            </div>
-                            <div class="form-group">
-                              <label for="message">Amount</label>
-                              <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter the Amount">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </form>
-                        </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                  <img src="https://via.placeholder.com/300x200.png?text=Car+Image" class="card-img-top" alt="Car Image">
-                  <div class="card-body">
-                    <h5 class="card-title">2020 Nissan Altima</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec nisl id arcu bibendum aliquet.</p>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><strong>Color:</strong> Blue</li>
-                      <li class="list-group-item"><strong>Model:</strong> SV</li>
-                      <li class="list-group-item"><strong>Mileage:</strong> 10,000</li>
-                      <li class="list-group-item"><strong>VIN:</strong>
-                        ABC67890DEF12345</li>
-                        </ul>
-                        </div>
-                        <div class="card-footer">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vehicle3">Transfer Vehicle</button>
-
-                          <!-- Modal -->
-                            <div class="modal fade" id="vehicle3" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="my-modal-label">Transfer Vehicle</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  
-                                  <div class="modal-body">
-                                    <div class="col-md-6 mx-auto">
-                                  <form>
-                                    <div class="form-group">
-                                      <label for="name">Name</label>
-                                      <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="email">Email address</label>
-                                      <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address">
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="password">Password</label>
-                                      <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password">
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="message">Amount</label>
-                                      <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter the Amount">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                  </form>
-                                </div>
+  <% }) %>
+             
                                   </div>
                                 </div>
                               </div>
