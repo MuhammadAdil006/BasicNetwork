@@ -93,21 +93,22 @@
       </section>
       <section class="container">
         <div class="container">
+          <% for (let i = 0; i < cars.length; i += 3) { %>
             <div class="row">
-              <% cars.forEach(function(car) { %>
+              <% for (let j = i; j < Math.min(i + 3, cars.length); j++) { %>
               <div class="col-md-4 mb-4">
                 <div class="card h-100">
                   <img src="https://via.placeholder.com/300x200.png?text=Car+Image" class="card-img-top" alt="Car Image">
                   <div class="card-body">
-                    <h5 class="card-title"><%=car.year%> <%=car.model%> <%=car.companyName%></h5>
+                    <h5 class="card-title"><%=cars[j].year%> <%=cars[j].model%> <%=cars[j].companyName%></h5>
                     <p class="card-text"></p>
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><strong>Chassis No:</strong> <%=car.chassisNo%></li>
-                      <li class="list-group-item"><strong>Model:</strong> <%=car.model%></li>
-                      <li class="list-group-item"><strong>Type:</strong> <%=car.type%></li>
-                      <li class="list-group-item"><strong>Engine No:</strong> <%=car.engineNo%></li>
-                      <li class="list-group-item"><strong>Price</strong> <%=car.soldPrice%></li>
-                      <li class="list-group-item"><strong>Last Transfer Date</strong> <%=car.transferDate%></li>
+                      <li class="list-group-item"><strong>Chassis No:</strong> <%=cars[j].chassisNo%></li>
+                      <li class="list-group-item"><strong>Model:</strong> <%=cars[j].model%></li>
+                      <li class="list-group-item"><strong>Type:</strong> <%=cars[j].type%></li>
+                      <li class="list-group-item"><strong>Engine No:</strong> <%=cars[j].engineNo%></li>
+                      <li class="list-group-item"><strong>Price</strong> <%=cars[j].soldPrice%></li>
+                      <li class="list-group-item"><strong>Last Transfer Date</strong> <%=cars[j].transferDate%></li>
                     </ul>
                   </div>
                   <div class="card-footer">
@@ -130,11 +131,11 @@
                             <div class="col-md-6 mx-auto">
                               <div class="form-group">
                                 <label for="engine">Engine no</label>
-                                <input type="text" class="form-control" disabled id="engine" name="engine" value="<%=car.engineNo%>" >
+                                <input type="text" class="form-control" disabled id="engine" name="engine" value="<%=cars[j].engineNo%>" >
                               </div>
                               <div class="form-group">
                                 <label for="chassis">Chassis No</label>
-                                <input type="text" class="form-control" disabled id="chassis" name="chassis"  value="<%=car.chassisNo%>">
+                                <input type="text" class="form-control" disabled id="chassis" name="chassis"  value="<%=cars[j].chassisNo%>">
                               </div>
                               <div class="form-group">
                                 <label for="name">Name</label>
@@ -162,9 +163,10 @@
                 </div>
               </div>
   </form>
-  <% }) %>
+  <% } %>
              
                                   </div>
+                                  <% } %>
                                 </div>
                               </div>
                             </div>
@@ -192,22 +194,30 @@
                           
                           <div class="modal-body">
                             <div class="col-md-6 mx-auto">
-                          <form>
+                          <form method="post" action="maufactureVehicle">
                             <div class="form-group">
-                              <label for="name">Name</label>
-                              <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                              <label for="engineNo">Engine Number</label>
+                              <input type="text" class="form-control" id="engineNo" name="engineNo" placeholder="Enter car's Engine No e.g :AA6e7">
                             </div>
                             <div class="form-group">
-                              <label for="email">Email address</label>
-                              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address">
+                              <label for="chassisNo">chassisNo </label>
+                              <input type="chassisNo" class="form-control" id="chassisNo" name="chassisNo" placeholder="Enter car's  chassis no e.g :77y7">
                             </div>
                             <div class="form-group">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password">
+                              <label for="companyName">companyName</label>
+                              <input type="companyName" class="form-control" id="companyName" name="companyName" placeholder="Enter  companyName">
                             </div>
                             <div class="form-group">
-                              <label for="message">Amount</label>
-                              <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter the Amount">
+                              <label for="VehicleType">Vehicle Type</label>
+                              <input type="text" class="form-control" id="type" name="type" placeholder="Enter the vehicle type e.g:bike,car">
+                            </div>
+                            <div class="form-group">
+                              <label for="manufacturePrice">Manufacture Price</label>
+                              <input type="number" class="form-control" id="manufacturePrice" name="manufacturePrice" placeholder="Enter the vehicle manufacturePrice e.g:110000">
+                            </div>
+                            <div class="form-group">
+                              <label for="retailPrice">Retail Price</label>
+                              <input type="number" class="form-control" id="retailPrice" name="retailPrice" placeholder="Enter the vehicle retailPrice e.g:110000">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                           </form>

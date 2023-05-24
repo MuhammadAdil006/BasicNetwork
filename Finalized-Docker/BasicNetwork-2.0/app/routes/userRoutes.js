@@ -115,5 +115,29 @@ router.post('/registerUser', (req, res)=>{
             res.render("index",{title:"Automobile registration",registerSuccess:"error"});
         });
 });
+router.post('/maufactureVehicle',async function(req,res){
+    const date=new Date();
+    let year=date.getFullYear();
+    let month=date.getMonth();
+    let day=date.getDay();
+    // let rec_cnic=req.body.Reciever_cnic;
+    console.log(req.body);
+    const resultt=req.session.user;
+    const manufacturerCnic=resultt.cnic;
+    const todayDate=day.toString() +'/'+ month.toString()+'/'+year.toString();
+    let usern="Fbradmin";
+    let Org="Fbr";
+    var result=await invoke.invokeTransaction("automobilechannel", "gocc", "Manufacture", [manufacturerCnic,req.body.engineNo,req.body.chassisNo,req.body.companyName,year,req.body.type,"city",manufacturerCnic,req.body.manufacturePrice,req.body.retailPrice,todayDate], usern, Org);
+    await sleep(2000);
+    let message= await balanceOf(resultt.cnic,usern,Org);
+    console.log("message",message);
+    let transferMessage="no";
 
+    //get the vehicles owned
+    // "GetVehiclesByCNIC", "7777"
+    let cars=await query.query("automobilechannel", "gocc", [resultt.cnic],"GetVehiclesByCNIC",usern,Org);
+    
+
+    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars});
+});
 module.exports=router;

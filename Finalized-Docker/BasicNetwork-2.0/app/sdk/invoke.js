@@ -89,6 +89,10 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
             //     // fabric-network.TimeoutError
             //     console.log(e)
             // }
+        }else if (fcn =="Manufacture"){
+            result = await contract.submitTransaction(String(fcn), String(args[0]),String(args[1]),String(args[2]),String(args[3]),String(args[4]),String(args[5]),String(args[6]),String(args[7]),String(args[8]),String(args[9]),String(args[10]));
+            // message = `Successfully added the car asset with key ${args[0]}`;
+            console.log(String(result));
         }
         // } else if (fcn === "changeCarOwner") {
         //     result = await contract.submitTransaction(fcn, args[0], args[1]);
