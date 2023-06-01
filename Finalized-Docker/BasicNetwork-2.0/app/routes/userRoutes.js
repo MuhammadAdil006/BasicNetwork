@@ -115,6 +115,32 @@ router.post('/registerUser', (req, res)=>{
             res.render("index",{title:"Automobile registration",registerSuccess:"error"});
         });
 });
+router.post('/transferVehicle',async function(req,res){
+    const date=new Date();
+    let year=date.getFullYear();
+    let month=date.getMonth();
+    let day=date.getDay();
+    console.log(req.body);
+    const resultt=req.session.user;
+    const manufacturerCnic=resultt.cnic;
+    const todayDate=day.toString() +'/'+ month.toString()+'/'+year.toString();
+    let usern="Fbradmin";
+    let Org="Fbr";
+    // ["TransferOwnership", "7777","1234","A7655","23B8","Honda","2019-02-01"]}
+    var result=await invoke.invokeTransaction("automobilechannel", "gocc", "TransferOwnership", [manufacturerCnic,req.body.buyercnic,req.body.chassis,req.body.engine,req.body.companyName,todayDate], usern, Org);
+    await sleep(2000);
+    let message= await balanceOf(resultt.cnic,usern,Org);
+    console.log("message",message);
+    let transferMessage="no";
+
+    //get the vehicles owned
+    // "GetVehiclesByCNIC", "7777"
+    let cars=await query.query("automobilechannel", "gocc", [resultt.cnic],"GetVehiclesByCNIC",usern,Org);
+    
+
+    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars});
+
+});
 router.post('/maufactureVehicle',async function(req,res){
     const date=new Date();
     let year=date.getFullYear();

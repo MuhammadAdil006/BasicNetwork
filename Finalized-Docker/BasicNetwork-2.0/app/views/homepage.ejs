@@ -116,7 +116,7 @@
 
 <!-- Modal -->
                   
-<form >
+<form  method="post" action="/transferVehicle">
                     <div class="modal fade" id="vehicle1" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -132,26 +132,21 @@
                               <div class="form-group">
                                 <label for="engine">Engine no</label>
                                 <input type="text" class="form-control" disabled id="engine" name="engine" value="<%=cars[j].engineNo%>" >
+                                <input type="hidden" class="form-control"  id="engine" name="engine" value="<%=cars[j].engineNo%>" >
                               </div>
                               <div class="form-group">
                                 <label for="chassis">Chassis No</label>
                                 <input type="text" class="form-control" disabled id="chassis" name="chassis"  value="<%=cars[j].chassisNo%>">
+                                <input type="hidden" class="form-control"  id="chassis" name="chassis"  value="<%=cars[j].chassisNo%>">
                               </div>
                               <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                                <label for="companyName">companyName </label>
+                                <input type="text" class="form-control" disabled id="companyName" name="companyName"  value="<%=cars[j].companyName%>">
+                                <input type="hidden" class="form-control"  id="companyName" name="companyName"  value="<%=cars[j].companyName%>">
                               </div>
                               <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address">
-                              </div>
-                              <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password">
-                              </div>
-                              <div class="form-group">
-                                <label for="message">Amount</label>
-                                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter the Amount">
+                                <label for="cnic">CNIC</label>
+                                <input type="text" class="form-control" id="cnic" name="buyercnic" placeholder="Enter buyer's cnic">
                               </div>
                               <button type="submit" class="btn btn-primary">Transfer</button>
                             </div>
