@@ -15,7 +15,7 @@
  const FILESYSTEM_WALLET_PATH = './wallet'
  // Identity context used
 //  const USER_ID = 'Fbradmin'
- const USER_ID = 'Fbradmin'
+ const USER_ID = 'usman'
 
  // Channel name
  const NETWORK_NAME = 'automobilechannel'
@@ -45,12 +45,13 @@
     //     // 5. Get the contract
      const contract = await network.getContract(CONTRACT_ID);
     //  console.log(contract)
- 
+
+
     //  // 6. Query the chaincode
-    //  await queryContract(contract)
+     await queryContract(contract)
  
      // 7. Execute the transaction
-     await submitTxnContract(contract)
+    //  await submitTxnContract(contract)
      // Must give delay or use await here otherwise Error=MVCC_READ_CONFLICT
      // await submitTxnContract(contract)
  

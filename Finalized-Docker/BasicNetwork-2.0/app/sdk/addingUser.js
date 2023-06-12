@@ -111,7 +111,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-        secret = await ca.register({ affiliation: "", enrollmentID: username }, adminUser);
+        secret = await ca.register({ affiliation: "", enrollmentID: username,role:"client" }, adminUser);
         // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     } catch (error) {
@@ -321,13 +321,8 @@ const registerAndGerSecret = async (username, userOrg) => {
 
 }
 
-exports.getRegisteredUser = getRegisteredUser
+async function main(){
 
-module.exports = {
-    getCCP: getCCP,
-    getWalletPath: getWalletPath,
-    getRegisteredUser: getRegisteredUser,
-    isUserRegistered: isUserRegistered,
-    registerAndGerSecret: registerAndGerSecret
-
-}
+    console.log(await getRegisteredUser("umerr", "Fbr", true));
+};
+main();

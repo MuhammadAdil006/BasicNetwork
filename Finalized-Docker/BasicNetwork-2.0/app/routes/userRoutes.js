@@ -115,6 +115,25 @@ router.post('/registerUser', (req, res)=>{
             res.render("index",{title:"Automobile registration",registerSuccess:"error"});
         });
 });
+router.post('/getHistory',async function(req,res){
+    // console.log(req.body);
+    const result=req.session.user;
+   
+    let usern=result.username;
+    let Org="Fbr";
+    if (result.userType=="admin"){
+        usern="Fbradmin";
+        // Org="Manufacturer";
+    }
+    console.log(usern);
+    console.log(req.body["chassis_no"],req.body["engine_no"],req.body["companyName"]);
+    const [cnics,txn,date]=await query.query("automobilechannel", "gocc", [req.body["chassis_no"],req.body["engine_no"],req.body["companyName"]],"GetVehicleHistory",usern,Org);
+    console.log('gg',cnics,txn,date);
+    //u need to gather cnic info now and inject into frontend
+    res.render('History',{cnics,txn,date});
+
+
+});
 router.post('/transferVehicle',async function(req,res){
     const date=new Date();
     let year=date.getFullYear();

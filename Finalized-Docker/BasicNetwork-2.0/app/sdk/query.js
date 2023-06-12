@@ -88,6 +88,23 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
 
             }
             return NONE;
+        }else if (fcn=="GetVehicleHistory"){
+            result = await contract.evaluateTransaction(fcn, args[0],args[1],args[2]);
+            let ress=String(result);
+            // let allCars=[];
+            if (result){
+                console.log(ress);
+                
+                const [cnics,txn,date]=SeparateThings(ress);
+                console.log(cnics,txn,date);
+                if (cnics.length>0){
+                    return [cnics,txn,date];
+                }else{
+                    return NONE;
+                }
+
+            }
+            return NONE;
         }
         
         // result = JSON.parse(result.toString());
@@ -99,5 +116,42 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
 
     }
 }
-
+//utility functions
+function SeparateThings(json){
+    let cc=json;
+    let counter=cc.split('counter":')[1].split(",")[0];
+    let value=(Number(counter));
+    let txnArray=[];
+    let cnicArray=[];
+    let transferDateArray=[];
+    if (value>0){
+        let val=cc.split("txns");
+    let array=val[1].split('{"txn"');
+    let array2=array.slice(1,array.length);
+    //slice the array from 1 to n and use below code
+    array2.forEach(element => {
+        let doc=element.split(', "value":');
+        doc[0]="txn id"+doc[0];
+        txnArray.push(doc[0]);
+        // console.log(doc[1]);
+        //getting transferdate
+        //getting ownercnic
+        var parsedArray=doc[1].split('"ownerCNIC":');
+        // console.log(parsedArray);
+        var date=parsedArray[1].split('"transferDate":')[1];
+        date=date.split("}")[0];
+        console.log(date);
+        transferDateArray.push(date);
+        var cnicINfoArray=parsedArray[1].split(',"soldPrice"');
+        //correct cnic before pushing
+        if (cnicINfoArray[0].includes("CNIC")){
+            cnicINfoArray[0]=cnicINfoArray[0].split("CNIC.")[1];
+            cnicINfoArray[0]=cnicINfoArray[0].split('"')[0];
+        }
+        
+        cnicArray.push(cnicINfoArray[0]);
+    });
+    }
+    return [txnArray,cnicArray,transferDateArray];
+}
 exports.query = query

@@ -184,3 +184,9 @@ Transfer Ownership
 chain.sh invoke
 set-chain-env.sh  -i '{"Args": ["TransferOwnership", "7777","1234","A7655","23B8","Honda","2019-02-01"]}'
 chain.sh invoke
+
+chassisNO~EngineNo~Company name
+set-chain-env.sh  -q '{"Args": ["GetVehicleHistory", "A7655","23B8","Honda"]}'
+chain.sh query
+
+A76e55 23Be8 Honda
