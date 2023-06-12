@@ -130,7 +130,18 @@ router.post('/getHistory',async function(req,res){
     const [cnics,txn,date]=await query.query("automobilechannel", "gocc", [req.body["chassis_no"],req.body["engine_no"],req.body["companyName"]],"GetVehicleHistory",usern,Org);
     console.log('gg',cnics,txn,date);
     //u need to gather cnic info now and inject into frontend
-    res.render('History',{cnics,txn,date});
+    let user=[];
+    txn.forEach(element => {
+        console.log(element);
+        // User.findOne({ cnic: Number(element)}).then(async function(result){
+        //     console.log(result);
+        // let a={"username":result.username,"gender":result.gender,"email":result.email};
+        // user.push(a);
+        
+    // });
+});
+
+    res.render('History',{cnics,txn,date,user});
 
 
 });
