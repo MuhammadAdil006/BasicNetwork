@@ -59,11 +59,15 @@ router.post('/login',async function(req, res){
             //query for balance
             // let message =  query.query(channelName, chaincodeName, args, fcn, req.username, req.orgname);
             let usern=result.username;
+            let userType=result.userType;
             let Org="Fbr";
-            if (result.userType=="admin"){
-                usern="Fbradmin";
-                // Org="Manufacturer";
-            }
+            // if (result.userType=="admin"){
+            //     usern="Fbradmin";
+            //     // Org="Manufacturer";
+            // }
+            
+            usern="Fbradmin";
+
             console.log(result);
             console.log(result.cnic);
            
@@ -72,11 +76,16 @@ router.post('/login',async function(req, res){
             let transferMessage="no";
 
             //get the vehicles owned
-            // "GetVehiclesByCNIC", "7777"
-            let cars=await query.query("automobilechannel", "gocc", [result.cnic],"GetVehiclesByCNIC",usern,Org);
+            // "GetVehiclesByCNIC", "CNIC.7777" for user only 
+            let CN=result.cnic;
+            if (result.userType=="user"){
+                CN="CNIC."+result.cnic;
+                // Org="Manufacturer";
+            }
+            let cars=await query.query("automobilechannel", "gocc", [CN],"GetVehiclesByCNIC",usern,Org);
             
 
-            res.render('homepage',{username:result.username,token:message["balance"],transferMessage,cars});
+            res.render('homepage',{username:result.username,token:message["balance"],transferMessage,cars,userType});
         }
     }).catch((error)=>{
         console.log(error);
@@ -121,27 +130,28 @@ router.post('/getHistory',async function(req,res){
    
     let usern=result.username;
     let Org="Fbr";
-    if (result.userType=="admin"){
-        usern="Fbradmin";
-        // Org="Manufacturer";
-    }
+    // if (result.userType=="admin"){
+    //     usern="Fbradmin";
+    //     // Org="Manufacturer";
+    // }
+    usern="Fbradmin";
     console.log(usern);
     console.log(req.body["chassis_no"],req.body["engine_no"],req.body["companyName"]);
     const [cnics,txn,date]=await query.query("automobilechannel", "gocc", [req.body["chassis_no"],req.body["engine_no"],req.body["companyName"]],"GetVehicleHistory",usern,Org);
     console.log('gg',cnics,txn,date);
     //u need to gather cnic info now and inject into frontend
-    let user=[];
-    txn.forEach(element => {
-        console.log(element);
-        // User.findOne({ cnic: Number(element)}).then(async function(result){
-        //     console.log(result);
-        // let a={"username":result.username,"gender":result.gender,"email":result.email};
-        // user.push(a);
+    // let user=[];
+    // txn.forEach(element => {
+    //     console.log(element);
+    //     // User.findOne({ cnic: Number(element)}).then(async function(result){
+    //     //     console.log(result);
+    //     // let a={"username":result.username,"gender":result.gender,"email":result.email};
+    //     // user.push(a);
         
-    // });
-});
+    
 
-    res.render('History',{cnics,txn,date,user});
+
+    res.render('History',{cnics,txn,date});
 
 
 });
@@ -152,10 +162,14 @@ router.post('/transferVehicle',async function(req,res){
     let day=date.getDay();
     console.log(req.body);
     const resultt=req.session.user;
-    const manufacturerCnic=resultt.cnic;
+    let manufacturerCnic=resultt.cnic;
     const todayDate=day.toString() +'/'+ month.toString()+'/'+year.toString();
     let usern="Fbradmin";
+    let userType=resultt.userType;
     let Org="Fbr";
+    if (userType=="user"){
+        manufacturerCnic="CNIC."+resultt.cnic;
+    }
     // ["TransferOwnership", "7777","1234","A7655","23B8","Honda","2019-02-01"]}
     var result=await invoke.invokeTransaction("automobilechannel", "gocc", "TransferOwnership", [manufacturerCnic,req.body.buyercnic,req.body.chassis,req.body.engine,req.body.companyName,todayDate], usern, Org);
     await sleep(2000);
@@ -165,10 +179,15 @@ router.post('/transferVehicle',async function(req,res){
 
     //get the vehicles owned
     // "GetVehiclesByCNIC", "7777"
-    let cars=await query.query("automobilechannel", "gocc", [resultt.cnic],"GetVehiclesByCNIC",usern,Org);
+    let CN=resultt.cnic;
+    if (resultt.userType=="user"){
+        CN="CNIC."+resultt.cnic;
+        // Org="Manufacturer";
+    }
+    let cars=await query.query("automobilechannel", "gocc", [CN],"GetVehiclesByCNIC",usern,Org);
     
 
-    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars});
+    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars,userType});
 
 });
 router.post('/maufactureVehicle',async function(req,res){
@@ -183,6 +202,7 @@ router.post('/maufactureVehicle',async function(req,res){
     const todayDate=day.toString() +'/'+ month.toString()+'/'+year.toString();
     let usern="Fbradmin";
     let Org="Fbr";
+    let userType=resultt.userType;
     var result=await invoke.invokeTransaction("automobilechannel", "gocc", "Manufacture", [manufacturerCnic,req.body.engineNo,req.body.chassisNo,req.body.companyName,year,req.body.type,"city",manufacturerCnic,req.body.manufacturePrice,req.body.retailPrice,todayDate], usern, Org);
     await sleep(2000);
     let message= await balanceOf(resultt.cnic,usern,Org);
@@ -194,6 +214,6 @@ router.post('/maufactureVehicle',async function(req,res){
     let cars=await query.query("automobilechannel", "gocc", [resultt.cnic],"GetVehiclesByCNIC",usern,Org);
     
 
-    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars});
+    res.render('homepage',{username:resultt.username,token:message["balance"],transferMessage,cars,userType});
 });
 module.exports=router;

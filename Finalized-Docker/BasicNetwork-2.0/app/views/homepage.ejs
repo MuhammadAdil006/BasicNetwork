@@ -215,78 +215,59 @@
                         </div>
           
           </section>
-          <div class="text-center pb-3">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#manufacture">Manufacture Vehicle</button>
-
-<!-- Modal -->
-                    <div class="modal fade" id="manufacture" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="my-modal-label">Manufacture Vehicle</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
+          <% if (userType === 'admin') { %>
+            <div class="text-center pb-3">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#manufacture">Manufacture Vehicle</button>
+  
+  <!-- Modal -->
+                      <div class="modal fade" id="manufacture" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="my-modal-label">Manufacture Vehicle</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                              <div class="col-md-6 mx-auto">
+                            <form method="post" action="maufactureVehicle">
+                              <div class="form-group">
+                                <label for="engineNo">Engine Number</label>
+                                <input type="text" class="form-control" id="engineNo" name="engineNo" placeholder="Enter car's Engine No e.g :AA6e7">
+                              </div>
+                              <div class="form-group">
+                                <label for="chassisNo">chassisNo </label>
+                                <input type="chassisNo" class="form-control" id="chassisNo" name="chassisNo" placeholder="Enter car's  chassis no e.g :77y7">
+                              </div>
+                              <div class="form-group">
+                                <label for="companyName">companyName</label>
+                                <input type="companyName" class="form-control" id="companyName" name="companyName" placeholder="Enter  companyName">
+                              </div>
+                              <div class="form-group">
+                                <label for="VehicleType">Vehicle Type</label>
+                                <input type="text" class="form-control" id="type" name="type" placeholder="Enter the vehicle type e.g:bike,car">
+                              </div>
+                              <div class="form-group">
+                                <label for="manufacturePrice">Manufacture Price</label>
+                                <input type="number" class="form-control" id="manufacturePrice" name="manufacturePrice" placeholder="Enter the vehicle manufacturePrice e.g:110000">
+                              </div>
+                              <div class="form-group">
+                                <label for="retailPrice">Retail Price</label>
+                                <input type="number" class="form-control" id="retailPrice" name="retailPrice" placeholder="Enter the vehicle retailPrice e.g:110000">
+                              </div>
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
                           </div>
-                          
-                          <div class="modal-body">
-                            <div class="col-md-6 mx-auto">
-                          <form method="post" action="maufactureVehicle">
-                            <div class="form-group">
-                              <label for="engineNo">Engine Number</label>
-                              <input type="text" class="form-control" id="engineNo" name="engineNo" placeholder="Enter car's Engine No e.g :AA6e7">
                             </div>
-                            <div class="form-group">
-                              <label for="chassisNo">chassisNo </label>
-                              <input type="chassisNo" class="form-control" id="chassisNo" name="chassisNo" placeholder="Enter car's  chassis no e.g :77y7">
-                            </div>
-                            <div class="form-group">
-                              <label for="companyName">companyName</label>
-                              <input type="companyName" class="form-control" id="companyName" name="companyName" placeholder="Enter  companyName">
-                            </div>
-                            <div class="form-group">
-                              <label for="VehicleType">Vehicle Type</label>
-                              <input type="text" class="form-control" id="type" name="type" placeholder="Enter the vehicle type e.g:bike,car">
-                            </div>
-                            <div class="form-group">
-                              <label for="manufacturePrice">Manufacture Price</label>
-                              <input type="number" class="form-control" id="manufacturePrice" name="manufacturePrice" placeholder="Enter the vehicle manufacturePrice e.g:110000">
-                            </div>
-                            <div class="form-group">
-                              <label for="retailPrice">Retail Price</label>
-                              <input type="number" class="form-control" id="retailPrice" name="retailPrice" placeholder="Enter the vehicle retailPrice e.g:110000">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </form>
-                        </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-            
-                    
-                          
-                          <!-- <div class="modal-body">
-                            <div class="col-md-6 mx-auto">
-                          <form action="/getHistory" method="post">
-                            <div class="form-group">
-                              <label for="Chassis No">Chassis No</label>
-                              <input type="text" class="form-control" id="Chassis No" name="chassis_no" placeholder="Enter Chassis Number">
-                            </div>
-                            <div class="form-group">
-                              <label for="Engine No">Engine No</label>
-                              <input type="Engine No" class="form-control" id="Engine No" name="engine_no" placeholder="Enter a Engine Number">
-                            </div>
-                            <div class="form-group">
-                              <label for="companyName">companyName</label>
-                              <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Enter the companyName">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Get List</button>
-                          </form>
+                        
                         </div>
-                          </div>  -->
-                      
-                      </div>
+          <% } %>
+          
                     </div>
           </div>
           <footer class="bg-dark text-light py-3">

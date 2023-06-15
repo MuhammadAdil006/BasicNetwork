@@ -72,6 +72,9 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
             // console.log(y);
             let name ="\""+y[1].slice(0,-1)+"\"";
             y[1]=name;
+            if (arr1[1]==""){
+                arr1[1]="0";
+            }
             var JsonObject ={ "balance":parseInt(arr1[1]),"name":name};
             // console.log(result.response)
             console.log(`Transaction has been evaluated, result is: ${JsonObject}`);
@@ -81,6 +84,7 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
 
             result = await contract.evaluateTransaction(fcn, args[0]);
             let ress=String(result);
+            console.log("gg",ress);
             let allCars=[];
             if (result){
                 var JSONObject = JSON.parse(result);
