@@ -19,10 +19,11 @@ router.post('/transferTokens',async function(req,res){
     // let message =  query.query(channelName, chaincodeName, req.session.cnic, "balanceOf", req.session.username, req.session.organization);
     let usern=result.username;
     let Org="Fbr";
-    if (result.userType=="admin"){
-        usern="Fbradmin";
-        // Org="Manufacturer";
-    }
+    // if (result.userType=="admin"){
+    //     usern="Fbradmin";
+    //     // Org="Manufacturer";
+    // }
+    usern="Fbradmin";
     console.log(result);
     console.log(result.cnic);
     let transferResult=await TransferTokens(result.cnic,rec_cnic,amount,receiver_name,usern,Org);
@@ -35,7 +36,12 @@ router.post('/transferTokens',async function(req,res){
         transferMessage="success";
     }
     console.log(message);
-    res.render('homepage',{username:result.username,token:message["balance"],transferMessage});
+    if (result.cnic[0]!="C" && result.userType!="admin"){
+        result.cnic="CNIC."+result.cnic;
+    }
+    let cars=await query.query("automobilechannel", "gocc", [result.cnic],"GetVehiclesByCNIC",usern,Org);
+    let userType=result.userType;
+    res.render('homepage',{username:result.username,token:message["balance"],transferMessage,cars,userType});
 });
 function sleep(ms) {
     return new Promise((resolve) => {

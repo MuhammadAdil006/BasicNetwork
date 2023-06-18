@@ -14,16 +14,67 @@ html {
   }
   
   body {
-    margin-bottom: 60px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/ba.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
   .hidden{
       display:none;
   }
 
   #sign-in{
-    height: 100vh;
+    height: 50vh;
   }
   #login-pannel{
     padding-top:100px;
     height: 500px;
   }
+  .submit-button {
+    background-color:#c01c1c;;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .signup {
+    margin-bottom: 40px;
+  }
+
+  .submit-button:hover {
+    opacity: 0.9;
+  }
+  .form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+  }
+
+  .form-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #212529;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    color: #212529;
+  }
+
+  .form-control {
+    border-radius: 5px;
+  }
+.login-card {
+  background-color: white;
+}

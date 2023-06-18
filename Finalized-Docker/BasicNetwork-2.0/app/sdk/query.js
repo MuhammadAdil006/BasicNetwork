@@ -104,7 +104,7 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
                 if (cnics.length>0){
                     return [cnics,txn,date];
                 }else{
-                    return NONE;
+                    return [cnics,txn,date];
                 }
 
             }
