@@ -33,18 +33,18 @@ to confirm the binaries
 type bash ./validate-prereqs.sh
 
 # step 3 installation of network setup
-cd BasicNetwork-2.0
+cd BasicNetwork-2.0\
 
-cd artifacts
-docker-compose up -d
-make sure that container are running otherwise rebuild the network
+cd artifacts\
+docker-compose up -d\
+make sure that container are running otherwise rebuild the network\
 
 # step 4 installation of nodejs and other dependencies
-download nodejs v 14.21.3
-download visual studio 
-cd BasicNetwork-2.0/app
-delete the public directory and pakcage-lock.json file
-type npm install in terminal current directory
-make sure to remove node gyp error pretty common search on stackoverflow
-type nodemon app
-boom app working
+download nodejs v 14.21.3\
+download visual studio \
+cd BasicNetwork-2.0/app\
+delete the public directory and pakcage-lock.json file\
+type npm install in terminal current directory\
+make sure to remove node gyp error pretty common search on stackoverflow\
+type nodemon app\
+boom app working\
