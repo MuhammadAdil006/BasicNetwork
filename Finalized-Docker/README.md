@@ -1,20 +1,37 @@
-<!-- first time  -->
-cd autoDocker
-./init-setup.sh
+# Installation Guide
 
+# step 1:
+install vagrant ,oracle vm box,visual studio
+clone this git https://github.com/MuhammadAdil006/Finalized-Docker
+go into this folder
 
-. bins/set-context.sh excise
+# step 2 Installation of vm box and dependancies:
+open cmd 
 
-<!-- setting the admin context and now install the chaincode -->
+your path should be ....../Finalized-Docker
 
+type code . to open vscode 
 
-<!-- 2nd time  -->
+open setup folder
 
-cd autoDocker 
-./launch.sh
+click on each .sh file and below right of vscode click on crlf change into lf for each .sh file in this directory
 
-<!-- to remove all containers -->
+click on new terminal 
 
-./clean.sh all
+type vagrant up on terminal
 
+type vagrant ssh after downlaoding details
+
+you should have login now to vagrant
+
+type cd setup
+
+type bash ./init-vexpress.sh
+
+to confirm the binaries
+
+type bash ./validate-prereqs.sh
+
+# step 3 installation of network setup
+cd BasicNetwork-2.0
 
